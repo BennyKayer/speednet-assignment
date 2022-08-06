@@ -5,7 +5,7 @@ const DATA: Array<IData> = [
         sent_date: "2021-12-13 09:00:03",
         is_unread: false,
         subject: "Zaoszczędź! OC już od 230 zł",
-        snippet: "",
+        snippet: "Odbierz 50% rabatu na wymianę online",
     },
     {
         id: 100795227,

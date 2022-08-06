@@ -21,7 +21,9 @@ const getCheckedCount = (data: IListContext["data"]) => {
 };
 
 export const HUGE_DATA_LENGTH = 10000;
-const HUGE_DATA = new Array(HUGE_DATA_LENGTH).fill(DATA[0]);
+const HUGE_DATA = new Array(HUGE_DATA_LENGTH)
+    .fill(DATA[0])
+    .map((datum, index) => ({ ...datum, id: `${datum.id}${index}` }));
 
 // Context
 interface IListContext {
@@ -30,7 +32,6 @@ interface IListContext {
     toggleDatumUnread: (id: IData["id"]) => void;
     checkedCount: number;
     getItemById: (id: IData["id"]) => IData | undefined;
-    toggleDataSource: () => void;
 }
 
 const defaultValue: IListContext = {
@@ -39,13 +40,14 @@ const defaultValue: IListContext = {
     toggleDatumUnread: () => {},
     checkedCount: 0,
     getItemById: () => undefined,
-    toggleDataSource: () => {},
 };
 export const ListContext = createContext(defaultValue);
 
 export const ListContextProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [data, setData] = useState(DATA);
-    const [checkedCount, setCheckedCount] = useState(getCheckedCount(DATA));
+    const [data, setData] = useState(HUGE_DATA);
+    const [checkedCount, setCheckedCount] = useState(
+        getCheckedCount(HUGE_DATA)
+    );
 
     const toggleDatumUnread = (id: IData["id"]) => {
         const newData = data.map((datum) =>
@@ -55,15 +57,7 @@ export const ListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     };
 
     const getItemById = (id: IData["id"]) => {
-        return data.find((datum) => datum.id === id);
-    };
-
-    const toggleDataSource = () => {
-        if (data.length === HUGE_DATA_LENGTH) {
-            setData(DATA);
-        } else {
-            setData(HUGE_DATA);
-        }
+        return data.find((datum) => `${datum.id}` === `${id}`);
     };
 
     useEffect(() => {
@@ -76,7 +70,6 @@ export const ListContextProvider: FC<PropsWithChildren> = ({ children }) => {
         toggleDatumUnread,
         checkedCount,
         getItemById,
-        toggleDataSource,
     };
 
     return (

@@ -1,27 +1,51 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useState } from "react";
 import ListItem from "../../components/list-item/list-item.component";
-import { HUGE_DATA_LENGTH, ListContext } from "../../contexts/list.context";
+import { ListContext } from "../../contexts/list.context";
 import "./home.styles.scss";
+import InfiniteScroll from "react-infinite-scroller";
+import Loader from "../../components/loader/loader.component";
 
 const Home: FC = () => {
-    const { checkedCount, data, toggleDataSource } = useContext(ListContext);
+    const itemsPerPage = 5;
+    const { checkedCount, data } = useContext(ListContext);
+    const [hasMore, setHasMore] = useState(true);
+    const [records, setRecords] = useState(itemsPerPage);
+
+    const showItems = (posts: Array<IData>) => {
+        var items = [];
+        for (var i = 0; i < records; i++) {
+            items.push(<ListItem key={posts[i].id} datum={posts[i]} />);
+        }
+        return items;
+    };
+
+    const loadMore = () => {
+        if (records === data.length) {
+            setHasMore(false);
+        } else {
+            setTimeout(() => setRecords(records + itemsPerPage), 2000);
+            // setRecords(records + itemsPerPage);
+        }
+    };
 
     return (
-        <div className="app-container">
-            <div className="toggle-data-buttons-container">
-                <button
-                    className="toggle-data-button"
-                    onClick={toggleDataSource}
-                >
-                    {data.length === HUGE_DATA_LENGTH
-                        ? "Zmień na oryginalne dane"
-                        : "Zmień na wielkie dane"}
-                </button>
+        <div className="home-container">
+            <div className="header">
+                <h2 className="checked-count">
+                    Zaznaczonych elementów: {checkedCount}
+                </h2>
             </div>
-            <h2 className="checked-count">{checkedCount}</h2>
-            {data.map((datum, index) => {
-                return <ListItem key={index} datum={datum} />;
-            })}
+
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={loadMore}
+                hasMore={hasMore}
+                loader={<Loader />}
+                useWindow={true}
+                className={"infinite-scroll"}
+            >
+                {showItems(data)}
+            </InfiniteScroll>
         </div>
     );
 };

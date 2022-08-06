@@ -2,6 +2,8 @@ import { FC, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ListContext } from "../../contexts/list.context";
 import "./list-item-detail.styles.scss";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
 
 const ListItemDetail: FC = () => {
     const { itemId } = useParams();
@@ -10,16 +12,22 @@ const ListItemDetail: FC = () => {
 
     return (
         <div className="list-item-detail-container">
-            <Link className="go-back-link" to={"/"}>
-                &#8592;
-            </Link>
             {item && (
-                <div className="list-item-detail">
-                    <div className="from">{item.from}</div>
-                    <div className="sent-date">{item.sent_date}</div>
-                    <div className="subject">{item.subject}</div>
-                    <div className="snippet">{item.snippet}</div>
-                </div>
+                <Card className="text-center list-item-detail">
+                    <Card.Header>{item.subject}</Card.Header>
+                    <Card.Body>
+                        <Card.Title>{item.from}</Card.Title>
+                        <Card.Text>{item.snippet}</Card.Text>
+                        <Button variant="primary">
+                            <Link className="go-back-link" to={"/"}>
+                                Powrót &#8592;
+                            </Link>
+                        </Button>
+                    </Card.Body>
+                    <Card.Footer className="text-muted">
+                        {item.sent_date}
+                    </Card.Footer>
+                </Card>
             )}
         </div>
     );

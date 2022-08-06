@@ -1,0 +1,17 @@
+.list-item-container {
+    width: 80%;
+}
+
+.list-item-details-link,
+.list-item-details-link:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.item-title {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+}

@@ -1,6 +1,7 @@
 import { FC, useContext, useState } from "react";
 import { ListContext } from "../../contexts/list.context";
 import "./checkbox.styles.scss";
+import FormCheck from "react-bootstrap/FormCheck";
 
 interface ICheckbox {
     datum: IData;
@@ -18,7 +19,7 @@ const Checkbox: FC<ICheckbox> = ({ datum }) => {
 
     return (
         <div className="checkbox-container">
-            <input type="checkbox" checked={checked} onChange={handleChange} />
+            <FormCheck checked={checked} onChange={handleChange} />
         </div>
     );
 };
