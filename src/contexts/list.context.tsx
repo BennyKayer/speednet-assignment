@@ -9,23 +9,7 @@ import {
 } from "react";
 import DATA from "../data";
 
-interface IListContext {
-    data: Array<IData>;
-    setData: Dispatch<SetStateAction<Array<IData>>>;
-    toggleDatumUnread: (id: IData["id"]) => void;
-    checkedCount: number;
-    getItemById: (id: IData["id"]) => IData | undefined;
-}
-
-const defaultValue: IListContext = {
-    data: [],
-    setData: () => {},
-    toggleDatumUnread: () => {},
-    checkedCount: 0,
-    getItemById: () => undefined,
-};
-export const ListContext = createContext(defaultValue);
-
+// Helpers
 const getCheckedCount = (data: IListContext["data"]) => {
     return data.reduce((total, current) => {
         if (current.is_unread) {
@@ -35,6 +19,29 @@ const getCheckedCount = (data: IListContext["data"]) => {
         }
     }, 0);
 };
+
+export const HUGE_DATA_LENGTH = 10000;
+const HUGE_DATA = new Array(HUGE_DATA_LENGTH).fill(DATA[0]);
+
+// Context
+interface IListContext {
+    data: Array<IData>;
+    setData: Dispatch<SetStateAction<Array<IData>>>;
+    toggleDatumUnread: (id: IData["id"]) => void;
+    checkedCount: number;
+    getItemById: (id: IData["id"]) => IData | undefined;
+    toggleDataSource: () => void;
+}
+
+const defaultValue: IListContext = {
+    data: [],
+    setData: () => {},
+    toggleDatumUnread: () => {},
+    checkedCount: 0,
+    getItemById: () => undefined,
+    toggleDataSource: () => {},
+};
+export const ListContext = createContext(defaultValue);
 
 export const ListContextProvider: FC<PropsWithChildren> = ({ children }) => {
     const [data, setData] = useState(DATA);
@@ -51,6 +58,14 @@ export const ListContextProvider: FC<PropsWithChildren> = ({ children }) => {
         return data.find((datum) => datum.id === id);
     };
 
+    const toggleDataSource = () => {
+        if (data.length === HUGE_DATA_LENGTH) {
+            setData(DATA);
+        } else {
+            setData(HUGE_DATA);
+        }
+    };
+
     useEffect(() => {
         setCheckedCount(getCheckedCount(data));
     }, [data]);
@@ -61,6 +76,7 @@ export const ListContextProvider: FC<PropsWithChildren> = ({ children }) => {
         toggleDatumUnread,
         checkedCount,
         getItemById,
+        toggleDataSource,
     };
 
     return (
