@@ -21,9 +21,9 @@ const getCheckedCount = (data: IListContext["data"]) => {
 };
 
 export const HUGE_DATA_LENGTH = 10000;
-const HUGE_DATA = new Array(HUGE_DATA_LENGTH)
+const HUGE_DATA: Array<IData> = new Array(HUGE_DATA_LENGTH)
     .fill(DATA[0])
-    .map((datum, index) => ({ ...datum, id: `${datum.id}${index}` }));
+    .map((datum, index) => ({ ...datum, id: Number(`${datum.id}${index}`) }));
 
 // Context
 interface IListContext {

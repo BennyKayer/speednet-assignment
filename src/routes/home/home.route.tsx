@@ -8,15 +8,15 @@ import Loader from "../../components/loader/loader.component";
 const Home: FC = () => {
     const itemsPerPage = 5;
     const { checkedCount, data } = useContext(ListContext);
-    const [hasMore, setHasMore] = useState(true);
-    const [records, setRecords] = useState(itemsPerPage);
+    const [hasMore, setHasMore] = useState<boolean>(true);
+    const [records, setRecords] = useState<number>(itemsPerPage);
 
-    const showItems = (posts: Array<IData>) => {
-        var items = [];
-        for (var i = 0; i < records; i++) {
-            items.push(<ListItem key={posts[i].id} datum={posts[i]} />);
+    const showItems = (items: Array<IData>) => {
+        const itemsToShow = [];
+        for (let i = 0; i < records; i++) {
+            itemsToShow.push(<ListItem key={items[i].id} datum={items[i]} />);
         }
-        return items;
+        return itemsToShow;
     };
 
     const loadMore = () => {
@@ -40,7 +40,7 @@ const Home: FC = () => {
                 pageStart={0}
                 loadMore={loadMore}
                 hasMore={hasMore}
-                loader={<Loader />}
+                loader={<Loader key={"loader"} />}
                 useWindow={true}
                 className={"infinite-scroll"}
             >
