@@ -14,9 +14,9 @@ const ListItemDetail: FC = () => {
         <div className="list-item-detail-container">
             {item && (
                 <Card className="text-center list-item-detail">
-                    <Card.Header>{item.subject}</Card.Header>
+                    <Card.Header>Od: {item.from}</Card.Header>
                     <Card.Body>
-                        <Card.Title>{item.from}</Card.Title>
+                        <Card.Title>{item.subject}</Card.Title>
                         <Card.Text>{item.snippet}</Card.Text>
                         <Button variant="primary">
                             <Link className="go-back-link" to={"/"}>
